@@ -24,10 +24,19 @@ Use pandas for loading and inspecting the data.
 
 
 ```python
-# Import libraries
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import warnings
+import matplotlib.pyplot as plt
+warnings.filterwarnings('ignore')
+
 
 # Read the yield data as a dataframe
+df = pd.read_csv('yield.csv')
 
+df.head()
 ```
 
 
@@ -83,7 +92,9 @@ Use pandas for loading and inspecting the data.
 
 
 ```python
-# Create a plot
+sns.distplot(df).set_title('Histogram of Apple Yields');
+plt.vlines(df.median(), 0 , sns.distplot(df).get_lines()[0].get_data()[1].max());
+
 ```
 
 
@@ -92,7 +103,7 @@ Use pandas for loading and inspecting the data.
 
 
 ```python
-# Your comments about the data here
+#The yields are normally distributed.
 
 ```
 
@@ -100,7 +111,7 @@ Use pandas for loading and inspecting the data.
 
 
 ```python
-# Your answer here
+# Each value represents the yield from a single tree in terms of total weight of apples that were obtained from this tree
 
 ```
 
@@ -111,12 +122,19 @@ Use pandas for loading and inspecting the data.
 
 ```python
 # Perform any calculations necessary here
-
+mean_ = df.mean().values
+std_ = df.std().values
+print(mean_- 3*std_)
+print(mean_+ 3*std_)
 ```
+
+    [24.39653434]
+    [60.41871337]
+    
 
 
 ```python
-# Write your answer here 
+# 99% on the yeilds are going to occur between 24 lb and 61 lb.
 
 ```
 
@@ -125,33 +143,46 @@ Use pandas for loading and inspecting the data.
 
 ```python
 # Calculate z
-
+z = (35 - mean_)/std_
+z
 ```
 
 
-```python
-# Interpret the result
 
+
+    array([-1.23384382])
+
+
+
+
+```python
+# This tree’s yield is 1.23 standard deviations below the mean yield.
 ```
 
 ## Suppose a tree has a z-score of 1.85. Interpret this z-score. What is the yield of this tree?
 
 
 ```python
-# Interpret the z score
-
+# This tree’s yield is 1.85 standard deviations above the mean yield.
 ```
 
 
 ```python
 # Calculate yield
-
+1.85* std_+ mean_
 ```
+
+
+
+
+    array([53.51446239])
+
+
 
 
 ```python
 # What is the yield ?
-
+# The yeild  is 53.5 lbs.
 ```
 
 ##  Convert each tree’s yield to a z-score so the new variable is the “z-score for weight”
@@ -165,22 +196,19 @@ The units are still the apple trees. For the data set of all z-scores:
 
 ```python
 # Give your solution here 
-
+df['z_score'] = (df['0']-mean_)/std_
+sns.distplot(df['z_score'])
+print('Mean:', round(df['z_score'].mean()))
+print('Standard Deviation:', df['z_score'].std())
 ```
 
     Mean: 0.0
-    SD: 1.0
-
+    Standard Deviation: 1.0
+    
 
 
 ![png](index_files/index_17_1.png)
 
-
-
-```python
-# Your observations
-
-```
 
 ## Summary
 
